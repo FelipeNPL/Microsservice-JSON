@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="Buscar cep" onclick="buscarCepLista()"/>
+
+    <ul id="cep">
+
+
+    </ul>
+
+    <hr>
+    <h3>Endereço</h3>
+    Cep: <input type="text" id="cep" onblur="buscarCep(this.value)"/><p>
+    Rua: <input type="text" id="rua" /><p>
+    Complemento: <input type="text" id="complemento" /><p>
+    Bairro: <input type="text" id="bairro" /><p>
+    Localidade: <input type="text" id="localidade" /><p>
+    UF: <input type="text" id="uf" /><p>
+    ibge: <input type="text" id="ibge" /><p>
+    gia: <input type="text" id="gia" /><p>
+    ddd: <input type="text" id="ddd" /><p>
+    siafi: <input type="text" id="siafi" /><p>    
+        
+        
+</body>
+
+<script>
+
+    function buscarCepLista() {
+        fetch("http://demo5379390.mockable.io/lista2")
+        .then(response => response.json())
+        .then(data => criarListaCep(data))
+        .catch(error => alert(error))
+    }
+
+    function criarListaCep(data){
+        for (let i = 0; i < data.length; i++) {
+            
+            let item = `<li>${data[i]}</li>`;
+            document.getElementById("cep").innerHTML += item;
+            
+        }
+    }
+    
+    function buscarCep(cep){
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => preencherCep(data))
+        .catch(error => alert(error))
+    }
+
+    function preencherCep(data){
+        document.getElementById("rua").value = data.logradouro;
+        document.getElementById("complemento").value = data.complemento;
+        document.getElementById("bairro").value = data.bairro;
+        document.getElementById("localidade").value = data.localidade;
+        document.getElementById("uf").value = data.uf;
+        document.getElementById("ibge").value = data.ibge;
+        document.getElementById("gia").value = data.gia;
+        document.getElementById("ddd").value = data.ddd;
+        document.getElementById("siafi").value = data.siafi;
+    }
+
+</script>
+
+</html>
